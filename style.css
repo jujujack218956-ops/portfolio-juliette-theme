@@ -1,0 +1,1008 @@
+/*
+Theme Name: Portfolio Juliette Theme
+Theme URI:
+Description: Thème personnalisé pour Juliette, développeuse WordPress
+Author: Juliette Béthery
+Author URI: https://agence-bethauv.fr
+Version: 1.0.0
+Requires at least: 6.6
+Requires PHP: 8.2
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: portfolio-juliette
+
+*/
+
+/* ============================================
+   FONTS
+   ============================================ */
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/space-mono-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/space-mono-italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('assets/fonts/space-mono-700italic.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('assets/fonts/poppins-light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('assets/fonts/poppins-lightitalic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* ============================================
+   PROPRIETES CSS
+   ============================================ */
+
+:root {
+    /* Polices */
+    --font-title: 'Space Mono', monospace;
+    --font-body: 'Poppins', sans-serif;
+
+    /* Couleurs — valeurs Figma */
+    --color-red: #E00000;
+    --color-red-2: #FE5858;
+    --color-red-3: #FFD6D6;
+    --color-black: #000000;
+    --color-blue-dark: #313144;
+    --color-grey-dark: #C4C4C4;
+    --color-grey-mid: #D8D8D8;
+    --color-grey-light: #B8B8C2;
+    --color-white: #FFFFFF;
+
+    /* Layout */
+    --header-height: 5rem;
+    --footer-height: 2.5rem;
+    --container-padding: 5rem;
+    --container-max: 75rem;
+    --column-gap: 1rem;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.875rem;
+    color: var(--color-black);
+    background: var(--color-white);
+}
+
+.site-main {
+    min-height: calc(100vh - var(--header-height));
+}
+
+.home-main {
+    padding-block: 0 2rem;
+}
+
+/* ============================================
+   TYPOGRAPHIE
+   ============================================ */
+
+h1 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 6rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 4.125rem;
+    line-height: 3.625rem;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.photo-meta {
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-grey-dark);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ============================================
+   HEADER & LOGO
+   ============================================ */
+
+.site-header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 14px 10px rgba(0, 0, 0, 0.03);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+}
+
+.site-header a {
+    display: flex;
+    align-items: center;
+}
+
+.site-header img {
+    height: 2vh;
+    width: auto;
+}
+
+.main-menu {
+    display: flex;
+    list-style: none;
+    gap: 1.875rem;
+}
+
+.main-menu a {
+    font-family: var(--font-title);
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    color: var(--color-black);
+    transition: color 0.3s ease;
+}
+
+.main-menu a:hover {
+    color: var(--color-red);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ============================================
+    FOOTER
+   ============================================ */
+
+.footer-container {
+    height: var(--footer-height);
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-black);
+    font-family: var(--font-title);
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    color: var(--color-black);
+}
+
+/* ============================================
+    MODALE CONTACT
+   ============================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 30;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-white);
+    padding: 30vh;
+    padding-top: 8rem;
+    border: 5px solid var(--color-black);
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.modal-header p {
+    position: absolute;
+    top: 0;
+    left: -1.875rem;
+    width: 150%;
+    font-family: var(--font-title);
+    font-style: italic;
+    font-size: 3.3rem;
+    text-transform: uppercase;
+    line-height: 0.9;
+    overflow: visible;
+}
+
+/* ============================================
+     CTA
+   ============================================ */
+
+.wpcf7-submit,
+.load-more {
+    margin-top: 1.25rem;
+}
+
+.wpcf7-submit,
+.contact-photo,
+.load-more {
+    padding: 0.5rem 0.9375rem;
+    width: 100%;
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    color: var(--color-black);
+    background-color: var(--color-grey-mid);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    box-shadow: 0 2px 1px 0px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.wpcf7-submit:hover,
+.contact-photo:hover,
+.load-more:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+.load-more {
+    width: 17.5rem;
+    height: 3.125rem;
+    margin-inline: auto;
+    display: block;
+    margin-bottom: 1.25rem;
+}
+
+.wpcf7-form-control {
+    width: 100%;
+    padding: 0.625rem;
+    margin-bottom: 0.625rem;
+    border: 1px solid var(--color-grey-light);
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-size: 1.125rem;
+}
+
+.wpcf7 label {
+    font-family: var(--font-title);
+    text-transform: uppercase;
+    font-size: 1.125rem;
+    color: var(--color-black);
+    margin-bottom: 0.3125rem;
+    display: block;
+}
+
+/* ============================================
+    MENU MOBILE 
+============================================*/
+
+.menu-toggle,
+.mobile-panel {
+    display: none;
+    /* caché sur desktop */
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* ============================================
+    PAGE PHOTO
+   ============================================ */
+.page-photo {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto
+}
+
+.page-photo__container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--column-gap);
+}
+
+.page-photo__description {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-self: flex-end;
+}
+
+.page-photo__meta {
+    padding: 1rem 0;
+    text-transform: uppercase;
+    line-height: 2.5rem;
+}
+
+.page-photo__image {
+    flex: 1;
+}
+
+.page-photo__container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right;
+}
+
+.page-photo__single-bottom {
+    display: flex;
+    flex-direction: row;
+    gap: var(--column-gap);
+    justify-content: space-between;
+    height: 7.375rem;
+    border-bottom: 1px solid var(--color-black);
+}
+
+.page-photo__interet {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.125rem;
+    border-top: 1px solid var(--color-black);
+}
+
+.contact-photo {
+    width: 50%;
+    flex-shrink: 0;
+    padding: 1rem 5rem;
+    font-size: 1rem;
+}
+
+.card-photo {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 50%;
+    justify-content: end;
+    gap: 0.625rem;
+    align-self: flex-end;
+}
+
+.card-photo__thumbnail {
+    z-index: 10;
+    width: 5.6rem;
+    height: 5.6rem;
+    object-fit: cover;
+    position: absolute;
+    max-width: none;
+    bottom: 70%;
+    right: 0rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.card-photo a:hover .card-photo__thumbnail {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* La section : titre "Vous aimerez aussi" en haut, photos en dessous */
+.related-photos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 2rem;
+}
+
+/* Les 2 cartes côte à côte, à égalité */
+.related-photos__container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--column-gap);
+}
+
+.related-photos__title {
+    font-family: var(--font-title);
+    text-transform: uppercase;
+}
+
+.related-photos .photo-block {
+    flex: 1;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+}
+
+/* ============================================
+    HERO
+   ============================================ */
+.home-hero {
+    position: relative;
+    /* ancre les enfants positionnés en absolu */
+    height: 100vh;
+    overflow: hidden;
+}
+
+.home-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home-hero__title {
+    position: absolute;
+    white-space: nowrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: transparent;
+    -webkit-text-stroke: 0.19rem var(--color-white);
+}
+
+/* ============================================
+    HOME PAGE
+   ============================================ */
+.home-photos,
+.filter {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--column-gap);
+    padding: 2rem var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+}
+
+.home-photos .photo-block {
+    aspect-ratio: 564 / 495;
+    overflow: hidden;
+}
+
+/* ============================================
+    FILTRES
+   ============================================ */
+
+.filter {
+    padding-top: 6rem;
+}
+
+.filter__group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter__sort {
+    justify-self: end;
+}
+
+.filter select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+
+    font-family: var(--font-body);
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--color-black);
+    background-color: var(--color-white);
+    border: 0.08rem solid var(--color-black);
+    border-radius: 0.5rem;
+    padding: 1.5rem 2.5rem 1.5rem 1rem;
+    width: 12.5rem;
+    /* place à droite pour la flèche */
+
+    /* --- la flèche SVG --- */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+
+/* ============================================
+    OVERLAY SUR LES PHOTOS
+   ============================================ */
+.photo-block {
+    position: relative;
+    /* repère pour positionner l'overlay */
+}
+
+.photo-block__overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* voile noir */
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* ← centre l'œil */
+    padding: 1rem;
+    /* marge pour les coins */
+}
+
+.photo-block__eye svg {
+    width: 2.5rem;
+    height: auto;
+}
+
+.photo-block__fullscreen svg {
+    width: 1.5rem;
+    height: auto;
+}
+
+.photo-block__fullscreen {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    /* enlève le fond blanc */
+    border: none;
+    /* enlève la bordure */
+    padding: 0;
+    /* enlève l'espace interne */
+    cursor: pointer;
+    /* garde le curseur main */
+}
+
+.photo-block__reference {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    text-transform: uppercase;
+    font-family: var(--font-title);
+}
+
+.photo-block__category {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    text-transform: uppercase;
+    font-family: var(--font-title);
+    font-size: 0.875rem;
+}
+
+.photo-block:hover .photo-block__overlay,
+.photo-block:focus-within .photo-block__overlay {
+    opacity: 1;
+    /* visible au survol… et au focus clavier grâce au focus-within */
+}
+
+.photo-block__link,
+.photo-block__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* la vignette remplit le conteneur */
+}
+
+/* ============================================
+    LIGHTBOX
+   ============================================ */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.9);
+    /* fond noir quasi opaque */
+}
+
+.lightbox__inner {
+    /* zone de contenu centrée : croix et flèche droite partagent le même bord */
+    max-width: 75rem;
+    margin-inline: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.lightbox__top {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lightbox__body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.lightbox__figure {
+    position: relative;
+    /* repère pour caler infos et flèches sur les bords de la photo */
+    margin: 0;
+}
+
+.lightbox__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox__container img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+}
+
+.lightbox__close,
+.lightbox__prev,
+.lightbox__next {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-white);
+    font-family: var(--font-title);
+}
+
+.lightbox__prev,
+.lightbox__next {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.lightbox__close {
+    /* dans la barre du haut, calée à droite → alignée avec la flèche « Suivante » */
+    padding: 0;
+}
+
+.lightbox__close svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+}
+
+.lightbox__arrow {
+    width: 2.75rem;
+    height: auto;
+}
+
+.lightbox__reference,
+.lightbox__category {
+    position: absolute;
+    top: calc(100% + 1rem);
+    /* juste sous la photo, calé sur ses bords */
+    margin: 0;
+    color: var(--color-white);
+    font-family: var(--font-title);
+    text-transform: uppercase;
+}
+
+.lightbox__reference {
+    left: 0;
+}
+
+.lightbox__category {
+    right: 0;
+}
+
+.lightbox__loader {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25rem solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--color-white);
+    border-radius: 50%;
+    animation: lightbox-spin 0.8s linear infinite;
+}
+
+@keyframes lightbox-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+
+    :root {
+        --container-padding: 1.25rem;
+    }
+
+    .site-header {
+        position: relative;
+        padding: 0 var(--container-padding);
+        z-index: 15;
+    }
+
+    .site-header img {
+        height: 1.6vh;
+    }
+
+    .main-menu {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .close-burger {
+        display: none;
+    }
+
+    .menu-toggle.active .hamburger {
+        display: none;
+    }
+
+    .menu-toggle.active .close-burger {
+        display: block;
+    }
+
+    .mobile-panel {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        transform: translateX(100%);
+        /* hors écran à droite */
+        transition: transform 0.5s ease-in-out;
+        z-index: 20;
+    }
+
+    .mobile-panel.active {
+        transform: translateX(0);
+    }
+
+    .mobile-panel-header {
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--container-padding);
+        background-color: var(--color-white);
+    }
+
+    .mobile-panel-header img {
+        height: 1.6vh;
+    }
+
+    .menu-toggle-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .nav-mobile {
+        height: calc(100vh - var(--header-height));
+        background-color: var(--color-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main-menu-mobile {
+        font-family: var(--font-title);
+        font-size: 3rem;
+        text-transform: uppercase;
+        list-style: none;
+        color: var(--color-white);
+        text-align: center;
+        line-height: 2.2;
+    }
+
+    .home-photos,
+    .filter {
+        grid-template-columns: 1fr;
+    }
+
+    .filter {
+        padding-block: 2rem 0.5rem;
+    }
+
+    .home-photos {
+        justify-items: center;
+    }
+
+    .home-hero__title {
+        font-size: 2.25rem;
+    }
+
+    .filter__group {
+        flex-direction: column;
+        align-items: center;
+        /* centre Catégories et Formats */
+        gap: 0.8rem;
+    }
+
+    .filter select {
+        width: 80%;
+    }
+
+    .filter__sort {
+        justify-self: center;
+        /* annule le justify-self: end du desktop */
+    }
+
+    .page-photo__container {
+        flex-direction: column-reverse;
+    }
+
+    .page-photo__description {
+        align-self: flex-start;
+    }
+
+    .page-photo__single-bottom {
+        flex-direction: column;
+        height: auto;
+        /* le desktop impose 7.375rem : à libérer, sinon écrasé */
+    }
+
+    .page-photo__interet,
+    .contact-photo {
+        width: 100%;
+        /* ils font 50% en desktop */
+    }
+
+    .page-photo__interet {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-photo {
+        padding: 1rem 0;
+    }
+
+    .lightbox__prev span,
+    .lightbox__next span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .lightbox__inner {
+        padding: 0.5rem;
+        /* moins de marge autour */
+    }
+
+    .lightbox__arrow {
+        width: 5rem;
+    }
+
+    .lightbox__arrow line {
+        display: none;
+    }
+
+    .lightbox__body {
+        position: relative;
+        /* repère pour placer les flèches */
+        gap: 0;
+    }
+
+    .lightbox__prev,
+    .lightbox__next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
+        z-index: 2;
+        /* au-dessus de la photo */
+    }
+
+    .lightbox__prev {
+        left: 0.3rem;
+    }
+
+    .lightbox__next {
+        right: 0.3rem;
+    }
+
+    .lightbox__container img {
+        max-height: 90vh;
+        /* photo plus grande */
+    }
+
+    .modal-contact {
+        padding: 3vh;
+        padding-top: 8rem;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        height: auto;
+        gap: 0.5rem;
+        padding-block: 1rem;
+    }
+}

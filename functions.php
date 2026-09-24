@@ -100,3 +100,6 @@ add_action('rest_api_init', function () {
 
 // Type de contenu « Projet ».
 require_once get_theme_file_path('includes/cpt-projet.php');
+
+// Taxonomie « Type de projet ».
+require_once get_theme_file_path('includes/taxonomie-type-projet.php');

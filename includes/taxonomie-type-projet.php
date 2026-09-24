@@ -33,14 +33,12 @@ function portfolio_juliette_taxonomie_projet()
   );
 
   $arguments = array(
-    'labels'        => $etiquettes,
-    'public'        => true,
-    'has_archive'   => 'realisations',
-    'rewrite'       => array('slug' => 'type-projet'),
-    'menu_icon'     => 'dashicons-portfolio',
-    'menu_position' => 5,
-    'supports'      => array('title', 'editor', 'thumbnail', 'excerpt'),
-    'show_in_rest'  => true,
+    'labels'            => $etiquettes,
+    'public'            => true,
+    'hierarchical'      => true,
+    'show_admin_column' => true,
+    'rewrite'           => array('slug' => 'types-projets'),
+    'show_in_rest'      => true,
   );
 
   register_taxonomy('type_projet', 'projet', $arguments);

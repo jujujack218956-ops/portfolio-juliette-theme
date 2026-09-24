@@ -1,15 +1,17 @@
 <?php
-get_header();
-?>
+get_header(); ?>
+
+
 
 <main class="home-main">
-  <div class="home-hero">
-    <?php $image_hero = get_field('image_hero', 'option'); ?>
-    <?php if ($image_hero) : ?>
-      <?php echo wp_get_attachment_image($image_hero['ID'], 'large'); ?>
-    <?php endif; ?>
-    <h1 class="home-hero__title">photographe event</h1>
-  </div>
+  <?php if (have_posts()) : the_post(); ?>
+    <div class="home-hero">
+      <?php if (has_post_thumbnail()) : ?>
+        <?php the_post_thumbnail('large'); ?>
+      <?php endif; ?>
+      <h1 class="home-hero__title"><?php the_title(); ?></h1>
+    </div>
+  <?php endif; ?>
 
   <div class="filter">
     <div class="filter__group">

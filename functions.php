@@ -103,3 +103,6 @@ require_once get_theme_file_path('includes/cpt-projet.php');
 
 // Taxonomie « Type de projet ».
 require_once get_theme_file_path('includes/taxonomie-type-projet.php');
+
+// Champs personnalisés des fiches projet.
+require_once get_theme_file_path('includes/metabox-projet.php');

@@ -18,50 +18,26 @@ Text Domain: portfolio-juliette
    ============================================ */
 
 @font-face {
-    font-family: 'Space Mono';
-    src: url('assets/fonts/space-mono-regular.woff2') format('woff2');
+    font-family: "Maven Pro";
+    src: url("assets/fonts/MavenPro-SemiBold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("assets/fonts/Roboto-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Space Mono';
-    src: url('assets/fonts/space-mono-italic.woff2') format('woff2');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Space Mono';
-    src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+    font-family: "Roboto";
+    src: url("assets/fonts/Roboto-Bold.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Space Mono';
-    src: url('assets/fonts/space-mono-700italic.woff2') format('woff2');
-    font-weight: 700;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Poppins';
-    src: url('assets/fonts/poppins-light.woff2') format('woff2');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Poppins';
-    src: url('assets/fonts/poppins-lightitalic.woff2') format('woff2');
-    font-weight: 300;
-    font-style: italic;
     font-display: swap;
 }
 
@@ -70,55 +46,136 @@ Text Domain: portfolio-juliette
    ============================================ */
 
 :root {
-    /* Polices */
-    --font-title: 'Space Mono', monospace;
-    --font-body: 'Poppins', sans-serif;
+    /* Couleurs */
+    --couleur-titres: #163172;
+    /* bleu marine — 12,2:1 */
+    --couleur-texte: #2f5972;
+    /* bleu-gris — 7,5:1 */
+    --couleur-liens: #0141da;
+    /* bleu vif — 7,6:1 */
+    --couleur-accent: #dd7744;
+    /* orange — 3,1:1 : décor et grands titres seulement, JAMAIS du texte courant */
+    --couleur-erreur: #da0101;
+    /* rouge — 5,3:1 : messages d'erreur uniquement */
+    --couleur-fond: #ffffff;
+    --couleur-fond-doux: #f4f6fb;
+    /* à valider */
 
-    /* Couleurs — valeurs Figma */
-    --color-red: #E00000;
-    --color-red-2: #FE5858;
-    --color-red-3: #FFD6D6;
-    --color-black: #000000;
-    --color-blue-dark: #313144;
-    --color-grey-dark: #C4C4C4;
-    --color-grey-mid: #D8D8D8;
-    --color-grey-light: #B8B8C2;
-    --color-white: #FFFFFF;
+    /* Typographie */
+    --police-titres: "Maven Pro", system-ui, sans-serif;
+    --police-texte: "Roboto", system-ui, sans-serif;
 
-    /* Layout */
-    --header-height: 5rem;
-    --footer-height: 2.5rem;
-    --container-padding: 5rem;
-    --container-max: 75rem;
-    --column-gap: 1rem;
+    --taille-texte: 1.125rem;
+    /* 18 px : confortable, public de tout âge */
+    --taille-petit: 1rem;
+    /* 16 px : jamais en dessous */
+    --taille-h3: 1.375rem;
+    --taille-h2: clamp(1.625rem, 1.3rem + 1.5vw, 2.25rem);
+    --taille-h1: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+    --interligne: 1.6;
+
+    /* Espacements */
+    --espace-xs: 0.5rem;
+    --espace-s: 1rem;
+    --espace-m: 1.5rem;
+    --espace-l: 2.5rem;
+    --espace-xl: 4rem;
+
+    /* Mise en page */
+    --largeur-max: 72rem;
+    --largeur-texte: 42rem;
+    /* ~70 caractères par ligne */
+    --rayon: 0.5rem;
 }
 
 /* ============================================
-   RESET & BASE
+   BASE
    ============================================ */
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    font-family: var(--font-body);
-    font-weight: 300;
-    font-size: 0.875rem;
-    color: var(--color-black);
-    background: var(--color-white);
+    margin: 0;
+    background: var(--couleur-fond);
+    color: var(--couleur-texte);
+    font-family: var(--police-texte);
+    font-size: var(--taille-texte);
+    line-height: var(--interligne);
 }
 
-.site-main {
-    min-height: calc(100vh - var(--header-height));
+h1,
+h2,
+h3 {
+    color: var(--couleur-titres);
+    font-family: var(--police-titres);
+    font-weight: 600;
+    line-height: 1.2;
 }
 
-.home-main {
-    padding-block: 0 2rem;
+h1 {
+    font-size: var(--taille-h1);
+}
+
+h2 {
+    font-size: var(--taille-h2);
+}
+
+h3 {
+    font-size: var(--taille-h3);
+}
+
+a {
+    color: var(--couleur-liens);
+    text-underline-offset: 0.15em;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--couleur-liens);
+    outline-offset: 3px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Texte lu par les lecteurs d'écran, invisible à l'écran */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Lien d'évitement : caché, puis visible dès qu'il reçoit le focus clavier */
+.lien-evitement {
+    position: absolute;
+    top: -100%;
+    left: var(--espace-s);
+    z-index: 1000;
+    padding: var(--espace-xs) var(--espace-s);
+    background: var(--couleur-titres);
+    color: var(--couleur-fond);
+    border-radius: var(--rayon);
+}
+
+.lien-evitement:focus {
+    top: var(--espace-s);
+}
+
+/* Logo + nom du site */
+.site-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espace-xs);
+    color: var(--couleur-titres);
+    font-family: var(--police-titres);
+    font-weight: 600;
+    text-decoration: none;
 }
 
 /* ============================================

@@ -40,6 +40,20 @@ function portfolio_juliette_enqueue()
 }
 add_action('wp_enqueue_scripts', 'portfolio_juliette_enqueue');
 
+// Préchargement des 2 polices affichées dès l'arrivée sur la page
+// (titres et texte courant). Roboto Bold se charge ensuite, à la demande.
+function portfolio_juliette_precharger_polices()
+{
+  $polices = array('MavenPro-SemiBold.woff2', 'Roboto-Regular.woff2');
+  foreach ($polices as $police) {
+    printf(
+      '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+      esc_url(get_theme_file_uri('assets/fonts/' . $police))
+    );
+  }
+}
+add_action('wp_head', 'portfolio_juliette_precharger_polices', 1);
+
 // Type de contenu « Projet ».
 require_once get_theme_file_path('includes/cpt-projet.php');
 

@@ -1,0 +1,7 @@
+Polices auto-hébergées — thème portfolio-juliette
+
+Roboto (Regular, Bold) — Google — Apache License 2.0 (LICENSE-Roboto.txt)
+Maven Pro (SemiBold) — Joe Prince — SIL Open Font License 1.1 (OFL-MavenPro.txt)
+
+Modifications : conversion TTF → WOFF2 et réduction au sous-ensemble latin
+avec fontTools (pyftsubset), septembre 2026. Aucune autre modification.

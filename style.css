@@ -19,6 +19,7 @@ Text Domain: portfolio-juliette
    2. Variables          6. Contenu des pages  10. Pagination
    3. Base               7. Liste réalisations 11. Mouvement réduit
    4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
+   13. Pages classiques
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -837,4 +838,33 @@ img {
 
 .wp-block-column>h3 {
     margin-top: 0;
+}
+
+/* ==========================================================================
+   13. PAGES CLASSIQUES (page.php)
+   ========================================================================== */
+
+.page-contenu__entete {
+    margin-bottom: var(--espace-l);
+}
+
+.page-contenu__titre::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: var(--espace-xs);
+    background: var(--couleur-accent);
+}
+
+.page-contenu__modifier {
+    font-size: var(--taille-petit);
+}
+
+.page-contenu__image {
+    margin-bottom: var(--espace-l);
+}
+
+.page-contenu__image img {
+    border-radius: var(--rayon);
 }

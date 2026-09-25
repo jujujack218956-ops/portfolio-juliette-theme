@@ -1,88 +1,62 @@
+/**
+ * Menu mobile du thème portfolio-juliette.
+ * Accessible au clavier : panneau inerte quand il est fermé,
+ * focus déplacé à l'ouverture et rendu au bouton à la fermeture,
+ * fermeture par la touche Échap.
+ */
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Modale de contact
-  const modalClose = document.querySelector('.modal-close');
-  const modalOverlay = document.querySelector('.modal-overlay');
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navMobile = document.querySelector('.mobile-panel');
-  const navMobileClose = document.querySelector('.menu-toggle-close');
+  const boutonMenu = document.querySelector('.menu-toggle');
+  const panneau = document.querySelector('.mobile-panel');
+  const boutonFermer = document.querySelector('.menu-toggle-close');
 
-  // Ouverture via clic sur contact
-  function openModal() {
-    if (modalOverlay) modalOverlay.classList.add('active');
-    if (menuToggle) {
-      menuToggle.setAttribute('aria-expanded', 'true');
-      menuToggle.classList.remove('active');
-    }
-    if (navMobile) navMobile.classList.remove('active');
+  if (!boutonMenu || !panneau) {
+    return;
   }
 
-  const contactLinks = document.querySelectorAll('.contact-link a');
-  contactLinks.forEach(function (contactLink) {
-    if (contactLink && modalOverlay) {
-      contactLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation(); // empêche la propagation du clic
-        openModal();
-      });
+  // Fermé au départ : ni lu par les lecteurs d'écran, ni atteignable au clavier.
+  panneau.inert = true;
+
+  function ouvrirMenu() {
+    panneau.inert = false;
+    panneau.classList.add('active');
+    boutonMenu.classList.add('active');
+    boutonMenu.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+
+    // Le focus passe dans le panneau, sur le bouton de fermeture.
+    if (boutonFermer) {
+      boutonFermer.focus();
+    }
+  }
+
+  function fermerMenu() {
+    panneau.classList.remove('active');
+    boutonMenu.classList.remove('active');
+    boutonMenu.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+    panneau.inert = true;
+
+    // Le focus revient là où l'utilisateur était.
+    boutonMenu.focus();
+  }
+
+  boutonMenu.addEventListener('click', function () {
+    if (boutonMenu.getAttribute('aria-expanded') === 'true') {
+      fermerMenu();
+    } else {
+      ouvrirMenu();
     }
   });
 
-  const contactPhoto = document.querySelectorAll('.contact-photo');
-  contactPhoto.forEach(function (btn) {
-    if (btn && modalOverlay) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation(); // empêche la propagation du clic
-        const ref = btn.dataset.ref;
-        const refField = document.querySelector('[name="ref-photo"]');
-        if (refField) {
-          refField.value = ref;
-        }
-        openModal();
-      });
+  if (boutonFermer) {
+    boutonFermer.addEventListener('click', fermerMenu);
+  }
+
+  // Touche Échap : ferme le menu s'il est ouvert.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panneau.classList.contains('active')) {
+      fermerMenu();
     }
   });
-  // Fermeture modale
-  function closeModal() {
-    if (modalOverlay) modalOverlay.classList.remove('active');
-    if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  // Fermeture via bouton close
-  if (modalClose && modalOverlay) {
-    modalClose.addEventListener('click', function () {
-      closeModal();
-    });
-  }
-
-  // Fermeture de la modale au clic en dehors du contenu
-  if (modalOverlay) {
-    modalOverlay.addEventListener('click', function (e) {
-      if (e.target === modalOverlay) {
-        closeModal();
-      }
-    });
-  }
-
-
-  // Menu mobile
-  if (menuToggle && navMobile) {
-    menuToggle.addEventListener('click', function () {
-      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', !isExpanded);
-      navMobile.classList.toggle('active');
-      menuToggle.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
-    });
-  }
-
-  // Fermeture du menu mobile via bouton close
-  if (navMobileClose && navMobile && menuToggle) {
-    navMobileClose.addEventListener('click', function () {
-      navMobile.classList.remove('active');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      menuToggle.classList.remove('active');
-    });
-  }
 });

@@ -1,74 +1,84 @@
 <?php
-get_header(); ?>
 
+/**
+ * Page d'accueil.
+ *
+ * Le texte est saisi dans l'éditeur de la page « Accueil » (modifiable sans code).
+ * Un bloc « Lire la suite » (More) placé dans l'éditeur sépare ce texte en deux :
+ * ce qui est avant s'affiche au-dessus des projets, ce qui est après en dessous.
+ * Les 3 derniers projets sont insérés entre les deux par ce gabarit.
+ *
+ * @package portfolio-juliette
+ */
 
+get_header();
 
-<main class="home-main">
-  <?php if (have_posts()) : the_post(); ?>
-    <div class="home-hero">
-      <?php if (has_post_thumbnail()) : ?>
-        <?php the_post_thumbnail('large'); ?>
-      <?php endif; ?>
-      <h1 class="home-hero__title"><?php the_title(); ?></h1>
-    </div>
-  <?php endif; ?>
+while (have_posts()) :
+  the_post();
 
-  <div class="filter">
-    <div class="filter__group">
-      <?php $categories = get_terms(array(
-        'taxonomy'   => 'categorie',
-        'hide_empty' => true,
-      )); ?>
-      <select id="filter-category" name="filter-category" aria-label="Filtrer par catégorie">
-        <option value="">catégories</option>
-        <?php foreach ($categories as $category) : ?>
-          <option value="<?php echo esc_attr($category->term_id); ?>"><?php echo esc_html($category->name); ?></option>
-        <?php endforeach; ?>
-      </select>
+  // Découpage du contenu au niveau du bloc « Lire la suite ».
+  $parties = get_extended(get_post_field('post_content', get_the_ID()));
 
-      <?php $formats = get_terms(array(
-        'taxonomy'   => 'format',
-        'hide_empty' => true,
-      )); ?>
-      <select id="filter-format" name="filter-format" aria-label="Filtrer par format">
-        <option value="">formats</option>
-        <?php foreach ($formats as $format) : ?>
-          <option value="<?php echo esc_attr($format->term_id); ?>"><?php echo esc_html($format->name); ?></option> <?php endforeach; ?>
-      </select>
-    </div>
+  // Retire les délimiteurs du bloc More restés de part et d'autre de la coupure.
+  $avant = preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['main']);
+  $apres = preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['extended']);
+?>
 
-    <select id="filter-sort" class="filter__sort" name="filter-sort" aria-label="Trier par date croissante ou décroissante">
-      <option value="">trier par</option>
-      <option value="desc">A partir des plus récentes</option>
-      <option value="asc">A partir des plus anciennes</option>
-    </select>
-  </div>
+  <div class="accueil">
 
-  <?php
-  $args = array(
-    'post_type'      => 'photo',
-    'posts_per_page' => 8,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-  );
+    <header class="accueil__hero">
+      <h1 class="accueil__titre"><?php the_title(); ?></h1>
+    </header>
 
-  $query = new WP_Query($args);
-  ?>
+    <?php if (trim($avant)) : ?>
+      <div class="accueil__contenu entry-content">
+        <?php echo apply_filters('the_content', $avant); // phpcs:ignore WordPress.Security.EscapeOutput -- contenu de l'éditeur, filtré par WordPress. 
+        ?>
+      </div>
+    <?php endif; ?>
 
-  <!-- Boucle : pour chaque photo, on appelle le bloc réutilisable -->
-  <div class="home-photos">
     <?php
-    if ($query->have_posts()) :
-      while ($query->have_posts()) : $query->the_post();
-        get_template_part('template-parts/photo-block', null, ['show_meta' => true]);
-      endwhile;
-      wp_reset_postdata();
-    endif;
+    // Les 3 derniers projets. no_found_rows : pas de pagination,
+    // donc WordPress n'a pas à compter tous les projets (une requête SQL en moins).
+    $projets = new WP_Query(
+      array(
+        'post_type'      => 'projet',
+        'posts_per_page' => 3,
+        'no_found_rows'  => true,
+      )
+    );
     ?>
+
+    <?php if ($projets->have_posts()) : ?>
+      <section class="accueil__projets" aria-labelledby="titre-projets">
+        <div class="accueil__projets-entete">
+          <h2 id="titre-projets">Quelques projets récents</h2>
+          <a href="<?php echo esc_url(get_post_type_archive_link('projet')); ?>">Toutes mes réalisations</a>
+        </div>
+
+        <div class="archive-projet__grille">
+          <?php
+          while ($projets->have_posts()) :
+            $projets->the_post();
+            // Titres des cartes en H3 : ils sont sous le H2 de la section.
+            get_template_part('template-parts/projet-block', null, array('niveau_titre' => 3));
+          endwhile;
+          wp_reset_postdata(); // Rend la main à la page Accueil.
+          ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
+    <?php if (trim($apres)) : ?>
+      <div class="accueil__contenu entry-content">
+        <?php echo apply_filters('the_content', $apres); // phpcs:ignore WordPress.Security.EscapeOutput 
+        ?>
+      </div>
+    <?php endif; ?>
+
   </div>
-  <button class="load-more" id="load-more" data-offset="8" aria-label="Charger plus de photos">Charger plus</button>
-</main>
 
 <?php
+endwhile;
+
 get_footer();
-?>

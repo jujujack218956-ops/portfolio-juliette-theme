@@ -18,7 +18,7 @@ Text Domain: portfolio-juliette
    1. Polices            5. Pied de page        9. Fiche projet
    2. Variables          6. Contenu des pages  10. Pagination
    3. Base               7. Liste réalisations 11. Mouvement réduit
-   4. En-tête et menus   8. Carte projet
+   4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -736,4 +736,105 @@ img {
         animation: none !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* ==========================================================================
+   12. ACCUEIL (front-page.php) ET CONTENU SAISI DANS L'ÉDITEUR
+   ========================================================================== */
+
+.accueil__hero {
+    max-width: var(--largeur-texte);
+    margin-bottom: var(--espace-m);
+}
+
+.accueil__titre::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: var(--espace-s);
+    background: var(--couleur-accent);
+}
+
+/* Sections de l'éditeur : un peu d'air entre elles */
+.entry-content>h2 {
+    margin-top: var(--espace-xl);
+}
+
+.entry-content>p,
+.entry-content>ul,
+.entry-content>ol {
+    max-width: var(--largeur-texte);
+}
+
+/* Section des projets récents */
+.accueil__projets {
+    margin-block: var(--espace-xl);
+}
+
+.accueil__projets-entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--espace-xs) var(--espace-m);
+    margin-bottom: var(--espace-l);
+}
+
+.accueil__projets-entete h2 {
+    margin: 0;
+}
+
+.accueil__projets-entete a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cible-tactile);
+    font-weight: 700;
+}
+
+/* Boutons de l'éditeur (bloc « Boutons ») aux couleurs de la charte */
+.wp-block-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espace-s);
+    margin-block: var(--espace-m);
+}
+
+.wp-block-button__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cible-tactile);
+    padding: var(--espace-xs) var(--espace-m);
+    border-radius: var(--rayon);
+    background: var(--couleur-liens);
+    color: var(--couleur-fond);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.wp-block-button__link:hover {
+    background: var(--couleur-titres);
+    color: var(--couleur-fond);
+}
+
+/* Style « Contour » du bloc Bouton : pour le lien secondaire */
+.wp-block-button.is-style-outline .wp-block-button__link {
+    border: 2px solid var(--couleur-liens);
+    background: transparent;
+    color: var(--couleur-liens);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+    background: var(--couleur-fond-doux);
+    color: var(--couleur-titres);
+}
+
+/* Bloc « Colonnes » (ex. les 3 situations, les 4 services) */
+.wp-block-columns {
+    gap: var(--espace-l);
+    margin-block: var(--espace-m);
+}
+
+.wp-block-column>h3 {
+    margin-top: 0;
 }

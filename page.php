@@ -17,7 +17,6 @@ while (have_posts()) :
 
     <header class="page-contenu__entete">
       <h1 class="page-contenu__titre"><?php the_title(); ?></h1>
-      <?php edit_post_link('Modifier cette page', '<p class="page-contenu__modifier">', '</p>'); ?>
     </header>
 
     <?php if (has_post_thumbnail()) : ?>

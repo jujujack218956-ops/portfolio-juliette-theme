@@ -37,6 +37,21 @@ function portfolio_juliette_enqueue()
     filemtime(get_theme_file_path('js/scripts.js')),
     true
   );
+
+  // Lightbox : sur les fiches projet uniquement.
+  // Ici, WordPress connaît déjà la page demandée : is_singular() fonctionne.
+  if (is_singular('projet')) {
+    wp_enqueue_script(
+      'portfolio-juliette-lightbox',
+      get_theme_file_uri('js/lightbox.js'),
+      array(),
+      filemtime(get_theme_file_path('js/lightbox.js')),
+      array(
+        'in_footer' => true,
+        'strategy'  => 'defer',
+      )
+    );
+  }
 }
 add_action('wp_enqueue_scripts', 'portfolio_juliette_enqueue');
 

@@ -19,7 +19,7 @@ Text Domain: portfolio-juliette
    2. Variables          6. Contenu des pages  10. Pagination
    3. Base               7. Liste réalisations 11. Mouvement réduit
    4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
-   13. Pages classiques  14. Page contact et formulaire
+   13. Pages classiques  14. Page contact     15. Captures et lightbox
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -1056,4 +1056,190 @@ img {
 .formulaire-contact__succes p:last-child,
 .formulaire-contact__alerte p:last-child {
     margin-bottom: 0;
+}
+
+/* ==========================================================================
+   15. CAPTURES DES FICHES PROJET ET LIGHTBOX (js/lightbox.js)
+   ========================================================================== */
+
+/* Captures insérées dans l'éditeur (blocs Image et Galerie) */
+.page-projet__contenu figure {
+    margin: var(--espace-l) 0;
+}
+
+.page-projet__contenu img {
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon);
+}
+
+.page-projet__contenu figcaption {
+    margin-top: var(--espace-xs);
+    font-size: var(--taille-petit);
+    text-align: center;
+}
+
+/* Une miniature cliquable s'agrandit : le curseur l'annonce */
+.page-projet__contenu a:has(img) {
+    display: block;
+    cursor: zoom-in;
+}
+
+.page-projet__contenu a:has(img):focus-visible {
+    outline: 3px solid var(--couleur-liens);
+    outline-offset: 3px;
+    border-radius: var(--rayon);
+}
+
+/* La boîte de dialogue : plein écran, fond sombre */
+.lightbox {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: var(--espace-m) var(--marge-laterale);
+    border: 0;
+    background: transparent;
+    color: var(--couleur-fond);
+}
+
+.lightbox[open] {
+    display: grid;
+    grid-template-areas:
+        "fermer fermer"
+        "image image"
+        "precedente suivante";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--espace-s);
+    justify-items: center;
+    align-items: center;
+}
+
+/* Voile derrière la boîte : bleu nuit de la charte, presque opaque */
+.lightbox::backdrop {
+    background: rgba(22, 49, 114, 0.94);
+}
+
+.lightbox__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espace-xs);
+    min-height: 0;
+    max-height: 100%;
+    margin: 0;
+}
+
+.lightbox__image {
+    min-height: 0;
+    max-width: 100%;
+    max-height: calc(100vh - 12rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--rayon);
+    background: var(--couleur-fond);
+}
+
+.lightbox__legende {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--espace-xs) var(--espace-m);
+    font-size: var(--taille-petit);
+    text-align: center;
+}
+
+.lightbox__compteur {
+    font-weight: 700;
+}
+
+/* Boutons : blancs sur fond sombre, cibles tactiles de 44 px minimum */
+.lightbox button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--cible-tactile);
+    min-height: var(--cible-tactile);
+    padding: var(--espace-xs) var(--espace-s);
+    border: 2px solid var(--couleur-fond);
+    border-radius: var(--rayon);
+    background: transparent;
+    color: var(--couleur-fond);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lightbox button:hover {
+    background: var(--couleur-fond);
+    color: var(--couleur-titres);
+}
+
+.lightbox button:focus-visible {
+    outline: 3px solid var(--couleur-fond);
+    outline-offset: 3px;
+}
+
+.lightbox button[hidden] {
+    display: none;
+}
+
+/* Placement : Fermer en haut à droite ; Précédente / Suivante en bas sur
+   téléphone, de part et d'autre de l'image sur ordinateur */
+.lightbox__fermer {
+    grid-area: fermer;
+    justify-self: end;
+}
+
+.lightbox__figure {
+    grid-area: image;
+}
+
+.lightbox__precedente {
+    grid-area: precedente;
+    justify-self: start;
+}
+
+.lightbox__suivante {
+    grid-area: suivante;
+    justify-self: end;
+}
+
+@media (min-width: 60rem) {
+    .lightbox[open] {
+        grid-template-areas:
+            ". . fermer"
+            "precedente image suivante";
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: auto 1fr;
+    }
+
+    .lightbox__image {
+        max-height: calc(100vh - 9rem);
+    }
+}
+
+/* Apparition en fondu, seulement si le visiteur accepte les animations */
+@media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] {
+        animation: lightbox-apparition 0.2s ease-out;
+    }
+
+    @keyframes lightbox-apparition {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/* La page ne défile pas sous la lightbox ouverte */
+body:has(.lightbox[open]) {
+    overflow: hidden;
 }

@@ -1,171 +1,144 @@
 /**
- * Lightbox — affichage plein écran des photos.
- * Déclenchée par les boutons .photo-block__fullscreen (data-full = image native).
- * La galerie et la navigation se basent sur toutes les photos présentes dans la page,
- * y compris celles ajoutées en Ajax (délégation d'événement).
+ * Lightbox des fiches projet : agrandit les captures d'écran.
+ *
+ * Adaptée de la lightbox du projet Nathalie Mota, avec trois changements :
+ * - elle s'appuie sur l'élément HTML natif <dialog> : le navigateur gère
+ *   lui-même la fenêtre modale, le piège du focus et la touche Échap ;
+ * - elle lit les images saisies dans l'éditeur (bloc Image ou Galerie
+ *   réglé sur « Lien : fichier média »), sans classe ni attribut à ajouter ;
+ * - amélioration progressive : sans JavaScript, le lien ouvre simplement
+ *   l'image en grand.
+ *
+ * GreenIT : la grande image n'est téléchargée qu'au moment où on l'ouvre,
+ * et ce script n'est chargé que sur les fiches projet (voir functions.php).
  */
-class Lightbox {
-  /**
-   * Écoute globale : un seul listener couvre aussi les photos chargées plus tard.
-   */
-  static init() {
-    document.addEventListener('click', (e) => {
-      const bouton = e.target.closest('.photo-block__fullscreen');
-      if (!bouton) return;
-      e.preventDefault();
-      new Lightbox(bouton.dataset.full, Lightbox.galerie());
-    });
+document.addEventListener('DOMContentLoaded', function () {
+
+  const zone = document.querySelector('.page-projet__contenu');
+  if (!zone || typeof HTMLDialogElement !== 'function') {
+    return; // Pas de contenu, ou navigateur trop ancien : les liens restent des liens.
   }
 
-  /**
-   * Construit la liste des photos de la page à l'instant du clic.
-   * @return {{url: string, title: string}[]}
-   */
-  static galerie() {
-    return Array.from(document.querySelectorAll('.photo-block__fullscreen'))
-      .map((b) => ({
-        url: b.dataset.full,
-        title: b.dataset.title || '',
-        reference: b.dataset.reference || '',
-        category: b.dataset.category || '',
-      }));
+  // Liens de l'éditeur qui pointent vers une image et en contiennent une.
+  const estUneImage = /\.(avif|webp|jpe?g|png|gif)(\?.*)?$/i;
+  const liens = Array.from(zone.querySelectorAll('a[href]')).filter(function (lien) {
+    return estUneImage.test(lien.getAttribute('href')) && lien.querySelector('img');
+  });
+
+  if (!liens.length) {
+    return;
   }
 
-  /**
-   * @param {string} url    URL de l'image à afficher
-   * @param {{url: string, title: string}[]} images  Galerie complète
-   */
-  constructor(url, images) {
-    this.images = images;
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.element = this.buildDOM();
-    document.body.appendChild(this.element);
-    document.addEventListener('keyup', this.onKeyUp);
-    this.loadImage(url);
-  }
-
-  /**
-   * Charge une image et met à jour la référence et la catégorie.
-   * @param {string} url
-   */
-  loadImage(url) {
-    this.url = null;
-    const container = this.element.querySelector('.lightbox__container');
-    const image = new Image();
-
-    const loader = document.createElement('div');
-    loader.classList.add('lightbox__loader');
-    container.innerHTML = '';
-    container.appendChild(loader);
-
-    image.onload = () => {
-      container.removeChild(loader);
-      container.appendChild(image);
-      this.url = url;
+  // La galerie : une entrée par lien, avec le texte alternatif et la légende.
+  const images = liens.map(function (lien) {
+    const miniature = lien.querySelector('img');
+    const figure = lien.closest('figure');
+    const legende = figure ? figure.querySelector('figcaption') : null;
+    return {
+      url: lien.getAttribute('href'),
+      alt: miniature.getAttribute('alt') || '',
+      legende: legende ? legende.textContent.trim() : '',
     };
-    image.src = url;
+  });
 
-    const photo = this.images.find((i) => i.url === url);
-    this.element.querySelector('.lightbox__reference').textContent = photo ? photo.reference : '';
-    this.element.querySelector('.lightbox__category').textContent = photo ? photo.category : '';
-    image.alt = photo ? photo.title : '';
+  // Une seule boîte de dialogue, créée une fois et réutilisée.
+  const dialog = document.createElement('dialog');
+  dialog.className = 'lightbox';
+  dialog.setAttribute('aria-label', 'Capture d\'écran agrandie');
+  dialog.innerHTML = `
+    <button class="lightbox__fermer" type="button">
+      <span class="sr-only">Fermer</span>
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+        <line x1="5" y1="5" x2="19" y2="19" />
+        <line x1="19" y1="5" x2="5" y2="19" />
+      </svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__image" src="" alt="">
+      <figcaption class="lightbox__legende">
+        <span class="lightbox__texte"></span>
+        <span class="lightbox__compteur" aria-live="polite"></span>
+      </figcaption>
+    </figure>
+    <button class="lightbox__precedente" type="button">Précédente</button>
+    <button class="lightbox__suivante" type="button">Suivante</button>`;
+  document.body.appendChild(dialog);
+
+  const image = dialog.querySelector('.lightbox__image');
+  const texte = dialog.querySelector('.lightbox__texte');
+  const compteur = dialog.querySelector('.lightbox__compteur');
+  const boutonPrecedente = dialog.querySelector('.lightbox__precedente');
+  const boutonSuivante = dialog.querySelector('.lightbox__suivante');
+
+  // Une seule image : pas de navigation.
+  if (images.length < 2) {
+    boutonPrecedente.hidden = true;
+    boutonSuivante.hidden = true;
   }
 
-  /**
-   * Photo suivante (boucle en fin de galerie).
-   * @param {MouseEvent|KeyboardEvent} e
-   */
-  next(e) {
-    e.preventDefault();
-    let i = this.images.findIndex((image) => image.url === this.url);
-    if (i === this.images.length - 1) i = -1;
-    this.loadImage(this.images[i + 1].url);
+  let position = 0;
+  let declencheur = null; // lien cliqué, pour lui rendre le focus à la fermeture
+
+  function afficher(index) {
+    // Boucle : après la dernière, on revient à la première (et inversement).
+    position = (index + images.length) % images.length;
+    const courante = images[position];
+
+    image.src = courante.url;
+    image.alt = courante.alt;
+    texte.textContent = courante.legende;
+    compteur.textContent = images.length > 1 ? (position + 1) + ' / ' + images.length : '';
   }
 
-  /**
-   * Photo précédente (boucle en début de galerie).
-   * @param {MouseEvent|KeyboardEvent} e
-   */
-  prev(e) {
-    e.preventDefault();
-    let i = this.images.findIndex((image) => image.url === this.url);
-    if (i === 0) i = this.images.length;
-    this.loadImage(this.images[i - 1].url);
+  function ouvrir(index, lien) {
+    declencheur = lien;
+    afficher(index);
+    dialog.showModal(); // fenêtre modale : le reste de la page devient inerte
   }
 
-  /**
-   * Ferme et nettoie la lightbox.
-   * @param {MouseEvent|KeyboardEvent} e
-   */
-  close(e) {
-    if (e) e.preventDefault();
-    this.element.remove();
-    document.removeEventListener('keyup', this.onKeyUp);
-  }
-
-  /**
-   * Raccourcis clavier : Échap ferme, flèches naviguent (accessibilité).
-   * @param {KeyboardEvent} e
-   */
-  onKeyUp(e) {
-    if (e.key === 'Escape') this.close(e);
-    else if (e.key === 'ArrowRight') this.next(e);
-    else if (e.key === 'ArrowLeft') this.prev(e);
-  }
-
-  /**
-   * Crée la structure de la lightbox et branche les comportements.
-   * @return {HTMLElement}
-   */
-  buildDOM() {
-    const dom = document.createElement('div');
-    dom.classList.add('lightbox');
-    dom.setAttribute('role', 'dialog');
-    dom.setAttribute('aria-label', 'Photo en plein écran');
-    dom.innerHTML = `
-      <div class="lightbox__inner">
-      <div class="lightbox__top">
-        <button class="lightbox__close" type="button" aria-label="Fermer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <line x1="5" y1="5" x2="19" y2="19" />
-            <line x1="19" y1="5" x2="5" y2="19" />
-          </svg>
-        </button>
-      </div>
-      <div class="lightbox__body">
-        <button class="lightbox__prev" type="button">
-          <svg class="lightbox__arrow" viewBox="0 0 44 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <line x1="44" y1="8" x2="2" y2="8" />
-            <polyline points="10,1 2,8 10,15" />
-          </svg>
-          <span>Précédente</span>
-        </button>
-        <figure class="lightbox__figure">
-          <div class="lightbox__container"></div>
-          <p class="lightbox__reference"></p>
-          <p class="lightbox__category"></p>
-        </figure>
-        <button class="lightbox__next" type="button">
-          <span>Suivante</span>
-          <svg class="lightbox__arrow" viewBox="0 0 44 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="8" x2="42" y2="8" />
-            <polyline points="34,1 42,8 34,15" />
-          </svg>
-        </button>
-      </div>
-      </div>`;
-
-    dom.querySelector('.lightbox__close').addEventListener('click', this.close.bind(this));
-    dom.querySelector('.lightbox__next').addEventListener('click', this.next.bind(this));
-    dom.querySelector('.lightbox__prev').addEventListener('click', this.prev.bind(this));
-    // Clic sur le fond (hors photo et boutons) → fermeture
-    dom.addEventListener('click', (e) => {
-      if (!e.target.closest('.lightbox__figure, .lightbox__prev, .lightbox__next, .lightbox__close')) {
-        this.close(e);
-      }
+  // Clic sur une miniature : on ouvre la lightbox au lieu de suivre le lien.
+  liens.forEach(function (lien, index) {
+    lien.addEventListener('click', function (evenement) {
+      evenement.preventDefault();
+      ouvrir(index, lien);
     });
-    return dom;
-  }
-}
+  });
 
-Lightbox.init();
+  dialog.querySelector('.lightbox__fermer').addEventListener('click', function () {
+    dialog.close();
+  });
+  boutonPrecedente.addEventListener('click', function () {
+    afficher(position - 1);
+  });
+  boutonSuivante.addEventListener('click', function () {
+    afficher(position + 1);
+  });
+
+  // Clic sur le fond sombre (en dehors de l'image et des boutons) : fermeture.
+  dialog.addEventListener('click', function (evenement) {
+    if (evenement.target === dialog) {
+      dialog.close();
+    }
+  });
+
+  // Flèches du clavier. Échap est géré par <dialog> lui-même.
+  dialog.addEventListener('keydown', function (evenement) {
+    if (images.length < 2) {
+      return;
+    }
+    if (evenement.key === 'ArrowRight') {
+      afficher(position + 1);
+    } else if (evenement.key === 'ArrowLeft') {
+      afficher(position - 1);
+    }
+  });
+
+  // À la fermeture (bouton, fond ou Échap) : on vide l'image et on rend
+  // le focus au lien d'origine, pour que la navigation au clavier reprenne là.
+  dialog.addEventListener('close', function () {
+    image.removeAttribute('src');
+    if (declencheur) {
+      declencheur.focus();
+    }
+  });
+});

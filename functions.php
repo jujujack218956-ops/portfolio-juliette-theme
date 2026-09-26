@@ -29,7 +29,7 @@ function portfolio_juliette_enqueue()
     filemtime(get_theme_file_path('style.css'))
   );
 
-  // Menu burger et modale.
+  // Menu burger.
   wp_enqueue_script(
     'portfolio-juliette-scripts',
     get_theme_file_uri('js/scripts.js'),
@@ -62,3 +62,6 @@ require_once get_theme_file_path('includes/taxonomie-type-projet.php');
 
 // Champs personnalisés des fiches projet.
 require_once get_theme_file_path('includes/metabox-projet.php');
+
+// Formulaire de contact (sans extension).
+require_once get_theme_file_path('includes/traitement-contact.php');

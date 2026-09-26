@@ -19,7 +19,7 @@ Text Domain: portfolio-juliette
    2. Variables          6. Contenu des pages  10. Pagination
    3. Base               7. Liste réalisations 11. Mouvement réduit
    4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
-   13. Pages classiques
+   13. Pages classiques  14. Page contact et formulaire
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -867,4 +867,193 @@ img {
 
 .page-contenu__image img {
     border-radius: var(--rayon);
+}
+
+/* ==========================================================================
+   14. PAGE CONTACT ET FORMULAIRE
+   ========================================================================== */
+
+/* Ordinateur : texte et coordonnées à gauche, formulaire à droite */
+.page-contact__grille {
+    display: grid;
+    gap: var(--espace-xl);
+}
+
+@media (min-width: 60rem) {
+    .page-contact__grille {
+        grid-template-columns: 2fr 3fr;
+        align-items: start;
+    }
+}
+
+.formulaire-contact {
+    padding: var(--espace-m);
+    border-top: 4px solid var(--couleur-accent);
+    border-radius: var(--rayon);
+    background: var(--couleur-fond-doux);
+}
+
+/* Cible d'ancre (#formulaire) : pas de contour autour de toute la section */
+.formulaire-contact:focus {
+    outline: none;
+}
+
+.formulaire-contact h2 {
+    font-size: var(--taille-h3);
+}
+
+.formulaire-contact__consigne {
+    font-size: var(--taille-petit);
+}
+
+.champ {
+    margin-bottom: var(--espace-m);
+}
+
+.champ label {
+    display: block;
+    margin-bottom: var(--espace-xs);
+    color: var(--couleur-titres);
+    font-weight: 700;
+}
+
+.champ__facultatif {
+    font-weight: 400;
+}
+
+.champ input[type="text"],
+.champ input[type="email"],
+.champ textarea {
+    width: 100%;
+    min-height: var(--cible-tactile);
+    padding: var(--espace-xs) var(--espace-s);
+    border: 2px solid var(--couleur-texte);
+    border-radius: var(--rayon);
+    background: var(--couleur-fond);
+    color: var(--couleur-texte);
+    font: inherit;
+    /* sinon les champs gardent la petite police du navigateur */
+}
+
+.champ textarea {
+    resize: vertical;
+}
+
+.champ input:focus-visible,
+.champ textarea:focus-visible {
+    outline: 3px solid var(--couleur-liens);
+    outline-offset: 2px;
+}
+
+/* Champ en erreur : bordure rouge ET message écrit.
+   La couleur seule ne suffit jamais (daltonisme, WCAG 1.4.1). */
+.champ [aria-invalid="true"] {
+    border-color: var(--couleur-erreur);
+}
+
+.champ__erreur {
+    margin: var(--espace-xs) 0 0;
+    color: var(--couleur-erreur);
+    font-size: var(--taille-petit);
+    font-weight: 700;
+}
+
+.champ__erreur:empty {
+    display: none;
+}
+
+/* Case à cocher : grande, alignée avec son texte */
+.champ--case {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--espace-xs) var(--espace-s);
+    align-items: start;
+}
+
+.champ--case input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--couleur-liens);
+}
+
+.champ--case label {
+    margin: 0;
+    font-weight: 400;
+}
+
+.champ--case .champ__erreur {
+    grid-column: 1 / -1;
+}
+
+/* Piège à robots : hors de l'écran (et non display:none, que certains robots
+   savent repérer) */
+.champ-piege {
+    position: absolute;
+    left: -100vw;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.formulaire-contact__rgpd {
+    font-size: var(--taille-petit);
+}
+
+.formulaire-contact__bouton {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cible-tactile);
+    padding: var(--espace-xs) var(--espace-m);
+    border: 0;
+    border-radius: var(--rayon);
+    background: var(--couleur-liens);
+    color: var(--couleur-fond);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.formulaire-contact__bouton:hover {
+    background: var(--couleur-titres);
+}
+
+.formulaire-contact__bouton:disabled {
+    cursor: wait;
+    opacity: 0.8;
+}
+
+/* Messages de succès et d'erreur générale */
+.formulaire-contact__succes,
+.formulaire-contact__alerte {
+    margin-bottom: var(--espace-m);
+    padding: var(--espace-s);
+    border-left: 4px solid;
+    border-radius: var(--rayon);
+    background: var(--couleur-fond);
+}
+
+.formulaire-contact__succes {
+    border-color: var(--couleur-liens);
+    color: var(--couleur-titres);
+    font-weight: 700;
+}
+
+.formulaire-contact__alerte {
+    border-color: var(--couleur-erreur);
+}
+
+.formulaire-contact__alerte ul {
+    margin: 0;
+    padding-left: var(--espace-m);
+}
+
+.formulaire-contact__alerte a {
+    color: var(--couleur-erreur);
+    font-weight: 700;
+}
+
+.formulaire-contact__succes p:last-child,
+.formulaire-contact__alerte p:last-child {
+    margin-bottom: 0;
 }

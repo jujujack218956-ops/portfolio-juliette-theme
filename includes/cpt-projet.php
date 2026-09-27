@@ -33,6 +33,7 @@ function portfolio_juliette_cpt_projet()
   );
 
   $arguments = array(
+    'description'  => "Mes réalisations WordPress : intégration de maquette, animations, débogage. Pour chaque projet : le contexte, la démarche et le code source.",
     'labels'        => $etiquettes,
     'public'        => true,
     'has_archive'   => 'realisations',

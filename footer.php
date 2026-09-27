@@ -2,11 +2,11 @@
 <!-- Fermeture du <main id="contenu"> ouvert dans header.php -->
 
 <?php
-// Écoscore : à renseigner UNIQUEMENT avec des valeurs mesurées sur le site en ligne
-// (page d'accueil), et à re-mesurer après chaque ajout de page.
-// Tant que ces deux valeurs sont vides, la ligne ne s'affiche pas.
-$ecoscore_poids = ''; // ex. '312 Ko'
-$ecoscore_note  = ''; // ex. 'A'
+// Écoscore : valeurs saisies dans Apparence › Personnaliser › Écoscore
+// (includes/ecoscore.php). Vides tant que rien n'est mesuré : rien ne s'affiche.
+$ecoscore_poids = portfolio_juliette_ecoscore('poids');
+$ecoscore_note  = portfolio_juliette_ecoscore('note');
+$ecoscore_date  = portfolio_juliette_ecoscore('date');
 
 // Page « Politique de confidentialité » désignée dans Réglages → Confidentialité.
 $lien_confidentialite = get_privacy_policy_url();
@@ -32,6 +32,9 @@ $lien_confidentialite = get_privacy_policy_url();
       <p class="site-footer__ecoscore">
         Site éco-conçu — page d'accueil chargée en <?php echo esc_html($ecoscore_poids); ?>
         · EcoIndex <?php echo esc_html($ecoscore_note); ?>
+        <?php if ($ecoscore_date) : ?>
+          (mesure : <?php echo esc_html($ecoscore_date); ?>)
+        <?php endif; ?>
       </p>
     <?php endif; ?>
 

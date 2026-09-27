@@ -81,3 +81,9 @@ require_once get_theme_file_path('includes/metabox-projet.php');
 
 // Formulaire de contact (sans extension).
 require_once get_theme_file_path('includes/traitement-contact.php');
+
+// Méta-description générée depuis l'extrait (sans extension SEO).
+require_once get_theme_file_path('includes/meta-description.php');
+
+// Écoscore réglable dans Apparence › Personnaliser.
+require_once get_theme_file_path('includes/ecoscore.php');

@@ -19,9 +19,10 @@ while (have_posts()) :
   // Découpage du contenu au niveau du bloc « Lire la suite ».
   $parties = get_extended(get_post_field('post_content', get_the_ID()));
 
-  // Retire les délimiteurs du bloc More restés de part et d'autre de la coupure.
-  $avant = preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['main']);
-  $apres = preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['extended']);
+  // force_balance_tags() referme les balises laissées ouvertes : si le bloc
+  // « Lire la suite » tombe dans un Groupe, la mise en page ne casse pas.
+  $avant = force_balance_tags(preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['main']));
+  $apres = force_balance_tags(preg_replace('#<!-- /?wp:more[^>]*-->#', '', $parties['extended']));
 ?>
 
   <div class="accueil">

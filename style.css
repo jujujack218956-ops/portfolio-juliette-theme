@@ -20,7 +20,7 @@ Text Domain: portfolio-juliette
    3. Base               7. Liste réalisations 11. Mouvement réduit
    4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
    13. Pages classiques  14. Page contact     15. Captures et lightbox
-   16. Accueil en bandes, citations, cartes
+   16. Accueil en bandes, citations, cartes   17. En-tête translucide, transitions entre les pages
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -1403,4 +1403,83 @@ body {
 
 .home .site-footer {
     margin-top: 0;
+}
+
+/* ==========================================================================
+   17. EN-TÊTE VERRE ET TRANSITIONS ENTRE LES PAGES
+   Deux effets du guide OC, en CSS seul : aucun JavaScript, aucune bibliothèque.
+   ========================================================================== */
+
+/* --- En-tête collant, effet verre dépoli --------------------------------- */
+/* Il reste visible au défilement ; le contenu passe dessous, flouté.
+   Sans prise en charge de backdrop-filter, le fond reste blanc opaque. */
+
+.site-header {
+    position: sticky;
+    top: var(--wp-admin--admin-bar--height, 0px);
+    /* sous la barre d'admin si connectée */
+    z-index: 800;
+    /* sous le panneau mobile (900) et le lien d'évitement (1000) */
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .site-header {
+        /* Blanc à 90 % : le bleu des titres garde un contraste supérieur à 10:1,
+           même au-dessus de la bande foncée. */
+        background: rgb(255 255 255 / 0.8);
+        -webkit-backdrop-filter: blur(0.75rem) saturate(1.4);
+        backdrop-filter: blur(0.75rem) saturate(1.4);
+    }
+}
+
+/* Personnes qui ont demandé moins de transparence à leur système : fond opaque. */
+@media (prefers-reduced-transparency: reduce) {
+    .site-header {
+        background: var(--couleur-fond);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}
+
+/* Sur téléphone, la barre d'admin de WordPress défile avec la page :
+   l'en-tête se colle alors tout en haut. */
+@media (max-width: 600px) {
+    .admin-bar .site-header {
+        top: 0;
+    }
+}
+
+/* Ancres et lien d'évitement : la cible ne se cache pas sous l'en-tête
+   (critère WCAG 2.4.11 « focus non masqué »). */
+:root {
+    /* :root l'emporte sur la règle « html » de la barre d'admin de WordPress */
+    scroll-padding-top: calc(6rem + var(--wp-admin--admin-bar--height, 0px));
+}
+
+
+/* --- Transitions entre les pages (API View Transitions) ------------------ */
+/* Le navigateur fond l'ancienne page dans la nouvelle.
+   Navigateurs qui ne la connaissent pas : navigation normale, rien ne casse. */
+
+@view-transition {
+    navigation: auto;
+}
+
+/* L'en-tête ne clignote pas : il reste en place pendant la transition. */
+.site-header {
+    view-transition-name: en-tete;
+}
+
+/* L'image d'un projet « voyage » de sa carte jusqu'à sa fiche :
+   le nom commun (projet-ID) est posé par PHP dans projet-block.php
+   et single-projet.php. */
+::view-transition-group(*) {
+    animation-duration: 0.35s;
+}
+
+/* Mouvement réduit demandé : aucune transition. */
+@media (prefers-reduced-motion: reduce) {
+    @view-transition {
+        navigation: none;
+    }
 }

@@ -80,7 +80,9 @@ get_header();
 
       <?php if (has_post_thumbnail()) : ?>
         <div class="page-projet__image">
-          <?php the_post_thumbnail('large'); ?>
+          <?php the_post_thumbnail('large', array(
+            'style' => 'view-transition-name: projet-' . get_the_ID(),
+          )); ?>
         </div>
       <?php endif; ?>
 

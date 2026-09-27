@@ -23,7 +23,11 @@ $types = get_the_terms(get_the_ID(), 'type_projet');
 
 	<?php if (has_post_thumbnail()) : ?>
 		<div class="projet-block__image">
-			<?php the_post_thumbnail('medium_large', array('loading' => 'lazy')); ?>
+			<?php the_post_thumbnail('medium_large', array(
+				'loading' => 'lazy',
+				// Même nom que l'image de la fiche : transition de l'une à l'autre.
+				'style'   => 'view-transition-name: projet-' . get_the_ID(),
+			)); ?>
 		</div>
 	<?php endif; ?>
 

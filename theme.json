@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"color": {
+			"custom": false,
+			"customGradient": false,
+			"customDuotone": false,
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"gradients": [],
+			"duotone": [],
+			"link": false,
+			"palette": [
+				{ "slug": "titres", "color": "#163172", "name": "Bleu des titres" },
+				{ "slug": "texte", "color": "#2f5972", "name": "Bleu du texte" },
+				{ "slug": "liens", "color": "#0141da", "name": "Bleu des liens et boutons" },
+				{ "slug": "accent", "color": "#dd7744", "name": "Orange (décor seulement, jamais pour du texte)" },
+				{ "slug": "fond", "color": "#ffffff", "name": "Blanc" },
+				{ "slug": "fond-doux", "color": "#f4f6fb", "name": "Bleu très pâle" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"defaultFontSizes": false,
+			"dropCap": false,
+			"fontSizes": [
+				{ "slug": "petit", "size": "1rem", "name": "Petit" },
+				{ "slug": "normal", "size": "1.125rem", "name": "Normal" },
+				{ "slug": "moyen", "size": "1.25rem", "name": "Moyen" },
+				{ "slug": "grand", "size": "1.375rem", "name": "Grand" }
+			]
+		},
+		"layout": {
+			"contentSize": "42rem",
+			"wideSize": "72rem"
+		}
+	}
+}

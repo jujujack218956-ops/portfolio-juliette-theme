@@ -12,7 +12,8 @@ function portfolio_juliette_setup()
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
   add_theme_support('html5', array('search-form', 'gallery', 'caption', 'style', 'script'));
-
+  // « Large » et « Pleine largeur » dans l'éditeur (bandes de l'accueil).
+  add_theme_support('align-wide');
   register_nav_menu('main-menu', 'Menu principal');
 }
 add_action('after_setup_theme', 'portfolio_juliette_setup');

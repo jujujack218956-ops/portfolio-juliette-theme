@@ -20,6 +20,7 @@ Text Domain: portfolio-juliette
    3. Base               7. Liste réalisations 11. Mouvement réduit
    4. En-tête et menus   8. Carte projet       12. Accueil et contenu saisi dans l'éditeur
    13. Pages classiques  14. Page contact     15. Captures et lightbox
+   16. Accueil en bandes, citations, cartes
    Approche « mobile d'abord » : les styles de base visent le téléphone,
    les @media (min-width) enrichissent pour les écrans plus larges.
    ========================================================================== */
@@ -61,13 +62,14 @@ Text Domain: portfolio-juliette
    ========================================================================== */
 
 :root {
-    --couleur-titres: #163172;
-    --couleur-texte: #2f5972;
-    --couleur-liens: #0141da;
-    --couleur-accent: #dd7744;
+    /* Couleurs : source unique = palette de theme.json (hex en secours) */
+    --couleur-titres: var(--wp--preset--color--titres, #163172);
+    --couleur-texte: var(--wp--preset--color--texte, #2f5972);
+    --couleur-liens: var(--wp--preset--color--liens, #0141da);
+    --couleur-accent: var(--wp--preset--color--accent, #dd7744);
     --couleur-erreur: #da0101;
-    --couleur-fond: #ffffff;
-    --couleur-fond-doux: #f4f6fb;
+    --couleur-fond: var(--wp--preset--color--fond, #ffffff);
+    --couleur-fond-doux: var(--wp--preset--color--fond-doux, #f4f6fb);
     --couleur-bordure: #d9dfec;
 
     --police-titres: "Maven Pro", system-ui, sans-serif;
@@ -1242,4 +1244,163 @@ img {
 /* La page ne défile pas sous la lightbox ouverte */
 body:has(.lightbox[open]) {
     overflow: hidden;
+}
+
+/* ==========================================================================
+   16. ACCUEIL EN BANDES, CITATION ET CARTES (blocs de l'éditeur)
+   Tout s'aligne sur le bord gauche du logo ; le texte garde 42 rem de large,
+   les colonnes et les projets prennent toute la largeur du contenu (72 rem),
+   les bandes de couleur vont d'un bord à l'autre de l'écran.
+   Les couleurs de fond viennent de la palette de theme.json.
+   ========================================================================== */
+
+/* Les bandes pleine largeur débordent du conteneur de 72 rem :
+   « clip » coupe le léger débordement dû à la barre de défilement,
+   sans casser l'image collante (sticky) des fiches projet. */
+body {
+    overflow-x: clip;
+}
+
+/* --- Une seule ligne d'alignement : le bord gauche du logo ------------- */
+/* Titres, texte, cartes et projets démarrent tous au même endroit
+   (recommandation OC : « faire reposer les éléments sur une grille »).
+   Le texte courant garde sa largeur de lecture (42 rem, ~70 caractères). */
+
+.accueil__contenu.entry-content {
+    max-width: none;
+    /* le conteneur prend toute la largeur ; ses enfants se limitent */
+}
+
+.accueil__contenu> :not(.alignfull, .alignwide, .wp-block-columns) {
+    max-width: var(--largeur-texte);
+}
+
+.accueil__accroche {
+    font-size: 1.25rem;
+}
+
+/* --- Bandes pleine largeur (bloc Groupe, alignement « Pleine largeur ») --- */
+/* La marge intérieure recalcule la position du contenu de l'en-tête :
+   le contenu de la bande s'aligne sur le logo, quelle que soit la largeur. */
+
+.accueil__contenu>.alignfull {
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    margin-block: 0;
+    padding: var(--espace-xl) max(var(--marge-laterale), calc(50vw - var(--largeur-max) / 2 + var(--marge-laterale)));
+}
+
+.accueil__contenu> :not(.alignfull)+.alignfull {
+    margin-top: var(--espace-xl);
+}
+
+/* Le bloc Groupe centre son contenu par défaut (règle de WordPress
+   marquée !important) : on le ramène à gauche, sur la ligne du logo. */
+.accueil__contenu>.alignfull>* {
+    max-width: var(--largeur-texte);
+    margin-inline: 0 !important;
+}
+
+/* Les colonnes prennent toute la largeur : leur texte respire. */
+.accueil__contenu>.alignfull>.wp-block-columns,
+.accueil__contenu>.alignfull>.alignwide,
+.accueil__contenu>.wp-block-columns {
+    max-width: none;
+}
+
+.accueil__contenu>.alignfull> :first-child {
+    margin-top: 0;
+}
+
+.accueil__contenu>.alignfull> :last-child {
+    margin-bottom: 0;
+}
+
+/* Section « Quelques projets récents » (gabarit) : bande bleu très pâle,
+   grille alignée sur le contenu de l'en-tête. */
+.accueil__projets {
+    margin-inline: calc(50% - 50vw);
+    margin-block: 0;
+    padding: var(--espace-xl) max(var(--marge-laterale), calc(50vw - var(--largeur-max) / 2 + var(--marge-laterale)));
+    background: var(--couleur-fond-doux);
+}
+
+/* --- Bande foncée (fond « Bleu des titres ») : appel à l'action ---------- */
+/* Blanc sur #163172 : contraste 12,2:1. */
+
+.has-titres-background-color,
+.has-titres-background-color :is(h2, h3, p, li),
+.has-titres-background-color a:not(.wp-block-button__link) {
+    color: var(--couleur-fond);
+}
+
+.has-titres-background-color .wp-block-button__link {
+    background: var(--couleur-fond);
+    color: var(--couleur-titres);
+}
+
+.has-titres-background-color .wp-block-button__link:hover {
+    background: var(--couleur-fond-doux);
+    color: var(--couleur-titres);
+}
+
+.has-titres-background-color :is(a, button):focus-visible {
+    outline-color: var(--couleur-fond);
+}
+
+/* --- Colonnes de l'accueil en cartes ------------------------------------ */
+/* Même langage que les cartes projet : fond blanc, bordure, filet orange. */
+
+.accueil__contenu .wp-block-column {
+    padding: var(--espace-m);
+    border: 1px solid var(--couleur-bordure);
+    border-top: 4px solid var(--couleur-accent);
+    border-radius: var(--rayon);
+    background: var(--couleur-fond);
+}
+
+.accueil__contenu .wp-block-column> :last-child {
+    margin-bottom: 0;
+}
+
+/* --- Citation (bloc « Citation ») --------------------------------------- */
+
+.wp-block-quote {
+    margin: var(--espace-l) 0;
+    padding: var(--espace-m);
+    border-left: 4px solid var(--couleur-accent);
+    border-radius: 0 var(--rayon) var(--rayon) 0;
+    background: var(--couleur-fond-doux);
+    color: var(--couleur-titres);
+    font-size: 1.25rem;
+    font-style: normal;
+}
+
+.wp-block-quote p {
+    margin-bottom: var(--espace-xs);
+}
+
+.wp-block-quote cite {
+    display: block;
+    color: var(--couleur-texte);
+    font-size: var(--taille-petit);
+    font-style: normal;
+}
+
+.wp-block-quote cite::before {
+    content: "— ";
+}
+
+/* Citation posée sur une bande bleu très pâle : fond blanc pour la détacher. */
+.has-fond-doux-background-color .wp-block-quote {
+    background: var(--couleur-fond);
+}
+
+/* Accueil : la dernière bande touche le pied de page, sans blanc entre les deux. */
+.home .site-main {
+    padding-bottom: 0;
+}
+
+.home .site-footer {
+    margin-top: 0;
 }

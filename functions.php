@@ -87,3 +87,5 @@ require_once get_theme_file_path('includes/meta-description.php');
 
 // Écoscore réglable dans Apparence › Personnaliser.
 require_once get_theme_file_path('includes/ecoscore.php');
+
+require_once get_theme_file_path('includes/securite.php');

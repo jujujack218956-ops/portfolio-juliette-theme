@@ -30,7 +30,7 @@ $lien_confidentialite = get_privacy_policy_url();
 
     <?php if ($ecoscore_poids && $ecoscore_note) : ?>
       <p class="site-footer__ecoscore">
-        Site éco-conçu — page d'accueil chargée en <?php echo esc_html($ecoscore_poids); ?>
+        Site éco-conçu — la page d'accueil pèse <?php echo esc_html($ecoscore_poids); ?>
         · EcoIndex <?php echo esc_html($ecoscore_note); ?>
         <?php if ($ecoscore_date) : ?>
           (mesure : <?php echo esc_html($ecoscore_date); ?>)

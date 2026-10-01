@@ -27,4 +27,5 @@ add_filter('rest_endpoints', function ($endpoints) {
  */
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_enqueue_scripts', 'wp_enqueue_emoji_styles');
+remove_action('wp_print_styles', 'print_emoji_styles');
 add_filter('the_generator', '__return_empty_string');

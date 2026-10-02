@@ -1,4 +1,9 @@
 <?php
+
+// Empêche l'exécution du fichier en dehors de WordPress.
+if (! defined('ABSPATH')) {
+  exit;
+}
 /**
  * Écoscore réglable dans Apparence › Personnaliser › Écoscore.
  * Les valeurs sont affichées dans le pied de page (footer.php)

@@ -1,5 +1,8 @@
 <?php
-
+// Empêche l'exécution du fichier en dehors de WordPress.
+if (! defined('ABSPATH')) {
+  exit;
+}
 /**
  * Traitement du formulaire de contact, codé sans extension.
  *

@@ -1,4 +1,9 @@
 <?php
+
+// Empêche l'exécution du fichier en dehors de WordPress.
+if (! defined('ABSPATH')) {
+  exit;
+}
 /**
  * Méta-description de chaque page, générée par le thème (sans extension SEO).
  *

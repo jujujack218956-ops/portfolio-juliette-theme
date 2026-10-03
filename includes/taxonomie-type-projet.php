@@ -22,14 +22,11 @@ function portfolio_juliette_taxonomie_projet()
     'singular_name'      => 'Type de projet',
     'menu_name'          => 'Types de projets',
     'all_items'          => 'Tous les types de projets',
-    'add_new'            => 'Ajouter',
     'add_new_item'       => 'Ajouter un type de projet',
     'edit_item'          => 'Modifier le type de projet',
-    'new_item'           => 'Nouveau type de projet',
     'view_item'          => 'Voir le type de projet',
     'search_items'       => 'Rechercher un type de projet',
     'not_found'          => 'Aucun type de projet trouvé',
-    'not_found_in_trash' => 'Aucun type de projet dans la corbeille',
   );
 
   $arguments = array(

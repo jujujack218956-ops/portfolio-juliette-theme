@@ -24,11 +24,7 @@ function portfolio_juliette_ajouter_metabox()
 }
 add_action('add_meta_boxes', 'portfolio_juliette_ajouter_metabox');
 
-/**
- * Affiche le contenu de l'encadré.
- *
- * @param WP_Post $post Le projet en cours d'édition.
- */
+
 
 /**
  * Définition des champs personnalisés du projet.
@@ -52,6 +48,11 @@ function portfolio_juliette_afficher_metabox($post)
 {
   wp_nonce_field('jul_enregistrer_projet', 'jul_nonce_projet');
 
+  /**
+   * Affiche le contenu de l'encadré.
+   *
+   * @param WP_Post $post Le projet en cours d'édition.
+   */
   foreach (portfolio_juliette_champs_projet() as $cle => $champ) {
     $valeur = get_post_meta($post->ID, $cle, true);
     $nom    = ltrim($cle, '_'); // _jul_annee devient jul_annee

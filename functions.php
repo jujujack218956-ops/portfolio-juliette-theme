@@ -88,4 +88,5 @@ require_once get_theme_file_path('includes/meta-description.php');
 // Écoscore réglable dans Apparence › Personnaliser.
 require_once get_theme_file_path('includes/ecoscore.php');
 
+// Sécurité : pages auteur, API REST, allègement du <head>.
 require_once get_theme_file_path('includes/securite.php');

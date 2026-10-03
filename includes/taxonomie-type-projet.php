@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Déclaration du type de contenu « Projet ».
+ * Déclaration de la taxonomie « Type de projet ».
  *
  * Remplace le plugin CPT UI : la configuration vit ici, dans le thème,
  * donc elle est versionnée et voyage avec lui.

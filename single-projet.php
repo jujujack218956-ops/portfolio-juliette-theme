@@ -68,10 +68,10 @@ get_header();
         <?php if ($url_site || $url_code) : ?>
           <ul class="page-projet__liens">
             <?php if ($url_site) : ?>
-              <li><a href="<?php echo esc_url($url_site); ?>">Voir le site en ligne</a></li>
+              <li><a href="<?php echo esc_url($url_site); ?>" target="_blank" rel="noopener noreferrer">Voir le site en ligne ↗<span class="sr-only"> (nouvel onglet)</span></a></li>
             <?php endif; ?>
             <?php if ($url_code) : ?>
-              <li><a href="<?php echo esc_url($url_code); ?>">Voir le code source</a></li>
+              <li><a href="<?php echo esc_url($url_code); ?>" target="_blank" rel="noopener noreferrer">Voir le code source ↗<span class="sr-only"> (nouvel onglet)</span></a></li>
             <?php endif; ?>
           </ul>
         <?php endif; ?>

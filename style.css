@@ -1424,7 +1424,7 @@ body {
 
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
     .site-header {
-        /* Blanc à 90 % : le bleu des titres garde un contraste supérieur à 10:1,
+        /* Blanc à 80 % : le bleu des titres garde un contraste supérieur à 8,4:1,
            même au-dessus de la bande foncée. */
         background: rgb(255 255 255 / 0.8);
         -webkit-backdrop-filter: blur(0.75rem) saturate(1.4);

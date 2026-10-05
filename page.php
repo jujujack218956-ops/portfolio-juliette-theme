@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Pages classiques : Services, À propos, Contact, Mentions légales,
+ * Pages classiques : Mentions légales,
  * Politique de confidentialité.
  *
  * @package portfolio-juliette

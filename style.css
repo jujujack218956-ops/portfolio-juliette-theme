@@ -1483,3 +1483,27 @@ body {
         navigation: none;
     }
 }
+
+/* Photos de l'accueil : bloc Galerie, classe « photos-accueil » */
+.photos-accueil img {
+    border-radius: var(--rayon);
+}
+
+.photos-accueil .blocks-gallery-caption {
+    font-size: var(--taille-petit);
+    color: var(--couleur-texte);
+}
+
+/* Accueil, haut de page : colonne élargie (52 rem, environ 85 caractères
+   par ligne pour l'accroche), alignée à gauche sur la ligne du logo */
+.accueil__hero,
+.accueil__contenu>p:first-child {
+    max-width: 62rem;
+}
+
+/* Récit (« Pourquoi je fais des sites autrement ») : colonne élargie
+   à 62 rem, alignée à gauche comme les autres bandes. La classe
+   « bande-recit » est ajoutée au Groupe dans l'éditeur. */
+.accueil__contenu>.alignfull.bande-recit>* {
+    max-width: 58rem;
+}

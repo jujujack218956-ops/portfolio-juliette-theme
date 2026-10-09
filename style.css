@@ -1485,8 +1485,34 @@ body {
 }
 
 /* Photos de l'accueil : bloc Galerie, classe « photos-accueil » */
+/* Phrase qui présente les photos : style d'accroche aux couleurs de la
+   charte, avec le filet orange des titres */
+p:has(+ .photos-accueil) {
+    margin-block-start: var(--espace-xl);
+    color: var(--couleur-titres);
+    font-family: var(--police-titres);
+    font-size: var(--taille-h3);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+p:has(+ .photos-accueil)::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin: var(--espace-s) auto 0;
+    background: var(--couleur-accent);
+}
+
+/* Photos : coins arrondis et ombre douce, teintée du bleu des titres */
 .photos-accueil img {
     border-radius: var(--rayon);
+    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--couleur-titres) 18%, transparent);
+}
+
+.photos-accueil {
+    margin-block-end: var(--espace-l);
 }
 
 .photos-accueil .blocks-gallery-caption {

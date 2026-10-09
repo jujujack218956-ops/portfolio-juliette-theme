@@ -90,3 +90,13 @@ require_once get_theme_file_path('includes/ecoscore.php');
 
 // Sécurité : pages auteur, API REST, allègement du <head>.
 require_once get_theme_file_path('includes/securite.php');
+
+// Accueil : aucune image du contenu n'est visible à l'ouverture de la page
+// (le haut de l'accueil n'est que du texte). On met le seuil à 0 pour que
+// WordPress applique le chargement différé à toutes, y compris aux trois
+// premières, et laisse le navigateur choisir la bonne taille.
+add_filter('wp_omit_loading_attr_threshold', 'portfolio_juliette_seuil_lazy_accueil');
+function portfolio_juliette_seuil_lazy_accueil($seuil)
+{
+  return is_front_page() ? 0 : $seuil;
+}
